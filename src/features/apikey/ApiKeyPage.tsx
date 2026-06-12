@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApiKey } from '@/context/ApiKeyContext'
+import { validateApiKey, PermissionError, ApiError } from '@/api/tokeninfo'
+import { REQUIRED_PERMISSIONS } from '@/api/types'
 import styles from './ApiKeyPage.module.css'
 
 export default function ApiKeyPage() {
@@ -9,18 +11,42 @@ export default function ApiKeyPage() {
 
   const [value, setValue] = useState('')
   const [remember, setRemember] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [missingPermissions, setMissingPermissions] = useState<string[]>([])
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     const trimmed = value.trim()
     if (!trimmed) {
       setError('Please enter an API key.')
       return
     }
+
     setError(null)
-    setApiKey(trimmed, remember)
-    navigate('/account')
+    setMissingPermissions([])
+    setLoading(true)
+
+    try {
+      await validateApiKey(trimmed)
+      setApiKey(trimmed, remember)
+      navigate('/account')
+    } catch (err) {
+      if (err instanceof PermissionError) {
+        setMissingPermissions(err.missingPermissions)
+        setError('This key is missing required permissions.')
+      } else if (err instanceof ApiError) {
+        setError(
+          err.status === 401
+            ? 'Invalid API key. Please check your key and try again.'
+            : `Request failed (${err.status}). Please try again.`
+        )
+      } else {
+        setError('Unable to reach the Guild Wars 2 API. Check your connection and try again.')
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -43,9 +69,9 @@ export default function ApiKeyPage() {
           .
         </p>
 
-        <p className={styles.permissions}>
+        <p className={styles.permissionsRequired}>
           Required permissions:{' '}
-          {['account', 'characters', 'inventories', 'wallet'].map((p) => (
+          {REQUIRED_PERMISSIONS.map((p) => (
             <code key={p} className={styles.permission}>{p}</code>
           ))}
         </p>
@@ -63,9 +89,22 @@ export default function ApiKeyPage() {
             placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXXXXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
             autoComplete="off"
             spellCheck={false}
+            disabled={loading}
           />
 
-          {error && <p className={styles.error}>{error}</p>}
+          {error && (
+            <div className={styles.errorBlock}>
+              <p className={styles.error}>{error}</p>
+              {missingPermissions.length > 0 && (
+                <p className={styles.missingList}>
+                  Missing:{' '}
+                  {missingPermissions.map((p) => (
+                    <code key={p} className={styles.permissionMissing}>{p}</code>
+                  ))}
+                </p>
+              )}
+            </div>
+          )}
 
           <label className={styles.rememberLabel}>
             <input
@@ -73,6 +112,7 @@ export default function ApiKeyPage() {
               checked={remember}
               onChange={(e) => setRemember(e.target.checked)}
               className={styles.checkbox}
+              disabled={loading}
             />
             Remember this API key
             <span className={styles.rememberNote}>
@@ -80,8 +120,8 @@ export default function ApiKeyPage() {
             </span>
           </label>
 
-          <button type="submit" className={styles.submit}>
-            Connect Account
+          <button type="submit" className={styles.submit} disabled={loading}>
+            {loading ? 'Validating…' : 'Connect Account'}
           </button>
         </form>
       </div>

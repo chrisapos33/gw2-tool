@@ -46,7 +46,7 @@
   line-height: 1.6;
 }
 
-.permissions {
+.permissionsRequired {
   font-size: 13px;
   color: var(--color-text-muted);
   margin-bottom: var(--space-6);
@@ -102,9 +102,39 @@
   border-color: var(--color-error) !important;
 }
 
+/* ─── Error block ──────────────────────────────────────────────────────────── */
+.errorBlock {
+  background: color-mix(in srgb, var(--color-error) 8%, var(--color-surface-2));
+  border: 1px solid color-mix(in srgb, var(--color-error) 35%, transparent);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
 .error {
   font-size: 13px;
   color: var(--color-error);
+}
+
+.missingList {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.permissionMissing {
+  background: color-mix(in srgb, var(--color-error) 15%, var(--color-surface-2));
+  border: 1px solid color-mix(in srgb, var(--color-error) 40%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 1px 6px;
+  font-size: 12px;
+  color: var(--color-error);
+  font-family: var(--font-mono);
 }
 
 /* ─── Remember checkbox ────────────────────────────────────────────────────── */
@@ -152,4 +182,10 @@
 
 .submit:active {
   background: var(--color-brand-dark);
+}
+
+.submit:disabled {
+  background: var(--color-brand-dark);
+  opacity: 0.6;
+  cursor: not-allowed;
 }
