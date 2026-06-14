@@ -1,3 +1,14 @@
+export interface MasteryRegion {
+  region: string
+  spent: number
+  earned: number
+}
+
+export interface MasteryPoints {
+  totals: MasteryRegion[]
+  unlocked: number
+}
+
 export interface Account {
   id: string
   name: string
@@ -12,6 +23,7 @@ export interface Account {
   monthly_ap: number
   wvw_rank: number
   last_modified: string
+  mastery_points?: MasteryPoints
 }
 
 export interface TokenInfo {
@@ -20,5 +32,5 @@ export interface TokenInfo {
   permissions: string[]
 }
 
-export const REQUIRED_PERMISSIONS = ['account', 'characters', 'inventories', 'wallet'] as const
+export const REQUIRED_PERMISSIONS = ['account', 'builds', 'characters', 'inventories', 'wallet'] as const
 export type RequiredPermission = typeof REQUIRED_PERMISSIONS[number]
