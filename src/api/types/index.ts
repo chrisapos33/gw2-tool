@@ -1,4 +1,4 @@
 export type { Account, MasteryPoints, MasteryRegion, TokenInfo, RequiredPermission } from './account'
 export { REQUIRED_PERMISSIONS } from './account'
 export type { Character, EquipmentItem, CharacterSpecializations, SpecializationSlot } from './character'
-export type { WalletEntry, Currency } from './wallet'
+export type { WalletEntry, Currency, WalletEntryWithCurrency } from './wallet'

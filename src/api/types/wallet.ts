@@ -9,4 +9,10 @@ export interface Currency {
   description: string
   icon: string
   order: number
+  deprecated?: boolean
+}
+
+export interface WalletEntryWithCurrency {
+  entry: WalletEntry
+  currency: Currency
 }
