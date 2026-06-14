@@ -1,3 +1,13 @@
+export interface EquipmentItem {
+  id: number
+  slot: string
+  skin?: number
+  upgrades?: number[]
+  infusions?: number[]
+  binding?: string
+  bound_to?: string
+}
+
 export interface Character {
   name: string
   race: string
@@ -10,6 +20,7 @@ export interface Character {
   last_modified: string
   created: string
   deaths: number
+  equipment?: EquipmentItem[]
   specializations?: CharacterSpecializations
 }
 
