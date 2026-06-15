@@ -8,6 +8,22 @@ export interface EquipmentItem {
   bound_to?: string
 }
 
+export interface InventorySlot {
+  id: number
+  count: number
+  skin?: number
+  upgrades?: number[]
+  infusions?: number[]
+  binding?: string
+  bound_to?: string
+}
+
+export interface CharacterBag {
+  id: number
+  size: number
+  inventory: (InventorySlot | null)[]
+}
+
 export interface Character {
   name: string
   race: string
@@ -21,6 +37,7 @@ export interface Character {
   created: string
   deaths: number
   equipment?: EquipmentItem[]
+  bags?: (CharacterBag | null)[]
   specializations?: CharacterSpecializations
 }
 

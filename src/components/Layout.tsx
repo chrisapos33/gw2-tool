@@ -5,6 +5,7 @@ import styles from './Layout.module.css'
 const NAV_ITEMS = [
   { to: '/account',    label: 'Account' },
   { to: '/characters', label: 'Characters' },
+  { to: '/inventory',  label: 'Inventory' },
   { to: '/wallet',     label: 'Wallet' },
   { to: '/bank',       label: 'Bank' },
   { to: '/materials',  label: 'Materials' },

@@ -7,6 +7,7 @@ import CharactersPage from '@/features/characters/CharactersPage'
 import WalletPage from '@/features/wallet/WalletPage'
 import BankPage from '@/features/bank/BankPage'
 import MaterialsPage from '@/features/materials/MaterialsPage'
+import InventoryPage from '@/features/inventory/InventoryPage'
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
             <Route index element={<Navigate to="/account" replace />} />
             <Route path="/account" element={<AccountPage />} />
             <Route path="/characters" element={<CharactersPage />} />
+            <Route path="/inventory" element={<InventoryPage />} />
             <Route path="/wallet" element={<WalletPage />} />
             <Route path="/bank" element={<BankPage />} />
             <Route path="/materials" element={<MaterialsPage />} />
