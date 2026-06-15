@@ -1,9 +1,7 @@
 import { gw2Fetch } from './client'
 import { ENDPOINTS } from './endpoints'
-import { chunkArray, publicFetch } from './utils'
-import type { BankSlot, BankItemWithDetails, Item } from './types'
-
-const BATCH_SIZE = 200
+import { fetchItemMap } from './utils'
+import type { BankSlot, BankItemWithDetails } from './types'
 
 const RARITY_ORDER: Record<string, number> = {
   Legendary:  7,
@@ -20,24 +18,12 @@ async function fetchBankSlots(key: string): Promise<(BankSlot | null)[]> {
   return gw2Fetch<(BankSlot | null)[]>(ENDPOINTS.bank, key)
 }
 
-async function fetchItemDetails(ids: number[]): Promise<Item[]> {
-  const chunks = chunkArray(ids, BATCH_SIZE)
-  const results = await Promise.all(
-    chunks.map((chunk) =>
-      publicFetch<Item[]>(`${ENDPOINTS.items}?ids=${chunk.join(',')}`)
-    )
-  )
-  return results.flat()
-}
-
 export async function fetchBank(key: string): Promise<BankItemWithDetails[]> {
   const slots = await fetchBankSlots(key)
   const occupied = slots.filter((s): s is BankSlot => s !== null)
   if (occupied.length === 0) return []
 
-  const ids = [...new Set(occupied.map((s) => s.id))]
-  const items = await fetchItemDetails(ids)
-  const itemMap = new Map(items.map((i) => [i.id, i]))
+  const itemMap = await fetchItemMap(occupied.map((s) => s.id))
 
   const result: BankItemWithDetails[] = occupied
     .filter((slot) => itemMap.has(slot.id))
