@@ -1,25 +1,9 @@
-import { gw2Fetch, ApiError } from './client'
+import { gw2Fetch } from './client'
 import { ENDPOINTS } from './endpoints'
+import { chunkArray, publicFetch } from './utils'
 import type { MaterialEntry, MaterialCategory, Item, MaterialEntryWithDetails } from './types'
 
 const BATCH_SIZE = 200
-
-function chunkArray<T>(arr: T[], size: number): T[][] {
-  const chunks: T[][] = []
-  for (let i = 0; i < arr.length; i += size) {
-    chunks.push(arr.slice(i, i + size))
-  }
-  return chunks
-}
-
-async function publicFetch<T>(url: string): Promise<T> {
-  const res = await fetch(url)
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({ text: res.statusText }))
-    throw new ApiError(res.status, body.text ?? 'Unknown error')
-  }
-  return res.json() as Promise<T>
-}
 
 async function fetchMaterialEntries(key: string): Promise<MaterialEntry[]> {
   return gw2Fetch<MaterialEntry[]>(ENDPOINTS.accountMaterials, key)
