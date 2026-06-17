@@ -8,6 +8,7 @@ import WalletPage from '@/features/wallet/WalletPage'
 import BankPage from '@/features/bank/BankPage'
 import MaterialsPage from '@/features/materials/MaterialsPage'
 import InventoryPage from '@/features/inventory/InventoryPage'
+import ItemsPage from '@/features/items/ItemsPage'
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
             <Route path="/wallet" element={<WalletPage />} />
             <Route path="/bank" element={<BankPage />} />
             <Route path="/materials" element={<MaterialsPage />} />
+            <Route path="/items" element={<ItemsPage />} />
           </Route>
           <Route path="*" element={<Navigate to="/account" replace />} />
         </Routes>

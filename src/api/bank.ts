@@ -14,7 +14,7 @@ const RARITY_ORDER: Record<string, number> = {
   Junk:       0,
 }
 
-async function fetchBankSlots(key: string): Promise<(BankSlot | null)[]> {
+export async function fetchBankSlots(key: string): Promise<(BankSlot | null)[]> {
   return gw2Fetch<(BankSlot | null)[]>(ENDPOINTS.bank, key)
 }
 

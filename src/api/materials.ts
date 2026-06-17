@@ -3,7 +3,7 @@ import { ENDPOINTS } from './endpoints'
 import { publicFetch, fetchItemMap } from './utils'
 import type { MaterialEntry, MaterialCategory, MaterialEntryWithDetails } from './types'
 
-async function fetchMaterialEntries(key: string): Promise<MaterialEntry[]> {
+export async function fetchMaterialEntries(key: string): Promise<MaterialEntry[]> {
   return gw2Fetch<MaterialEntry[]>(ENDPOINTS.accountMaterials, key)
 }
 

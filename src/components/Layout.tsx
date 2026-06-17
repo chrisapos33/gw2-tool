@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { to: '/wallet',     label: 'Wallet' },
   { to: '/bank',       label: 'Bank' },
   { to: '/materials',  label: 'Materials' },
+  { to: '/items',      label: 'All Items' },
 ]
 
 export default function Layout() {
